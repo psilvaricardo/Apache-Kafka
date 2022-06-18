@@ -18,7 +18,7 @@ Choose a self-explaining name for your project.
 
 By the time of writing this project was setup using the following environment: 
 - $ uname -a
-Linux arch 5.18.3-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 09 Jun 2022 16:14:10 +0000 x86_64 GNU/Linux
+- Linux arch 5.18.3-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 09 Jun 2022 16:14:10 +0000 x86_64 GNU/Linux
 
 
 ## Installation
