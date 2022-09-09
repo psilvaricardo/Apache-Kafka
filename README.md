@@ -3,7 +3,6 @@
 Apache Kafka for Developers using Spring Boot[Latest Edition]
 
 
-
 # Apache Kafka for Developers using Spring Boot[LatestEdition]
 
 Learn to build enterprise standard Kafka producers/consumers with Kafka Unit/Integration tests using Spring Boot.
@@ -20,9 +19,13 @@ By the time of writing this project was setup using the following environment:
 - Linux arch 5.18.3-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 09 Jun 2022 16:14:10 +0000 x86_64 GNU/Linux
 
 
-## Installation
+## Installation for Arch Linux
 - $ sudo pacman -S intellij-idea-community-edition jdk-openjdk jre-openjdk
 - $ paru -S kafka
 - $ sudo systemctl enable kafka.service
 
+## Installation for Linux
+- Go to https://kafka.apache.org/downloads
+- From the latest release version, check the higher Scala version
+- By the time of writing, recommended version 2.13 was downloaded from https://downloads.apache.org/kafka/3.2.1/kafka_2.13-3.2.1.tgz
 
