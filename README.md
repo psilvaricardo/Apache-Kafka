@@ -29,3 +29,5 @@ By the time of writing this project was setup using the following environment:
 - From the latest release version, check the higher Scala version
 - By the time of writing, recommended version 2.13 was downloaded from https://downloads.apache.org/kafka/3.2.1/kafka_2.13-3.2.1.tgz
 
+## Setting Up Kafka
+- https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot/blob/master/SetUpKafka.md
