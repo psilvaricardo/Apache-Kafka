@@ -43,7 +43,7 @@ auto.create.topics.enable=false
 ### Without Key
 
 ```
-./kafka-console-producer.sh --broker-list localhost:9092 --topic test-topic --from-beginning
+./kafka-console-producer.sh --broker-list localhost:9092 --topic test-topic
 ```
 
 ### With Key

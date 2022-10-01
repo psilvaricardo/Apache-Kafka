@@ -43,8 +43,16 @@ By the time of writing this project was set up using the following environment:
   - They can read the messages from the **latest**. Meaning read only the messages that's going to come after the consumers spun up.
   - They can read the messages from **specific offset**. Meaning, read the messages and the topic by passing a specific offset value from the consumer. This option can only be done programmatically.
   - If for some reason the consumer crashed and while it is down, the producer of the topic produced some more messages. Now the consumer is brought up after some time, how does it know that it needs to read from offset for the consumer? The consumer offset in general are stored in an internal topic called **__consumer_offsets**. In a nutshell, the consumer offsets behave like a bookmark for the consumers to go on check from which point in the topic it needs to read the messages from.
-
-- There is a handy command that you can run, which is going to list all the topics that you have in your broker: [List the topics in a cluster](./SetUpKafka.md#list-the-topics-in-a-cluster)
+  - There is a handy command that you can run, which is going to list all the topics that you have in your broker: [List the topics in a cluster](./SetUpKafka.md#list-the-topics-in-a-cluster)
+- **Group Id:** It plays a major role when it comes to scalable message consumption.
+  - Each different application will have a unique consumer group.
+  - The Kafka Broker manages the consumer-groups, it also acts as a group coordinator.
+- Apache Kafka as a **distributed system:** A distributed system, in general, are a collection of systems work and interact together in order to deliver some functionality or value. Some characteristic of distributed system are:
+  - **Availability and Fault Tolerance**.
+  - **Reliable Work Distribution**.
+  - **Easy Scalable**.
+  - **Handling Concurrency is fairly easy**.
+  - There are a lot more... for now let's focus on Kafka. 
 
 ## Information references
 - https://www.conduktor.io/kafka/kafka-topics-cli-tutorial
