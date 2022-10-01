@@ -16,7 +16,7 @@
 - Add the below properties in the server.properties
 
 ```
-listeners=PLAINTEXT://localhost:9092
+listeners=PLAINTEXT://localhost:9092 # This is where we are assigning the port number of the Kafka Broker
 auto.create.topics.enable=false
 ```
 
@@ -29,7 +29,13 @@ auto.create.topics.enable=false
 ## How to create a topic ?
 
 ```
-./kafka-topics.sh --create --topic test-topic -zookeeper localhost:2181 --replication-factor 1 --partitions 4
+./kafka-topics.sh --create --topic test-topic --replication-factor 1 --partitions 4 --bootstrap-server localhost:9092
+```
+
+## To check list of topics created
+
+```
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
 ```
 
 ## How to instantiate a Console Producer?
@@ -37,7 +43,7 @@ auto.create.topics.enable=false
 ### Without Key
 
 ```
-./kafka-console-producer.sh --broker-list localhost:9092 --topic test-topic
+./kafka-console-producer.sh --broker-list localhost:9092 --topic test-topic --from-beginning
 ```
 
 ### With Key
