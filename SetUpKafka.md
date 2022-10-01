@@ -161,7 +161,7 @@ auto.create.topics.enable=false
 
 ### Starting up the new Broker
 
-- Provide the new **server.properties** thats added.
+- Provide the new **server.properties** that's added.
 
 ```
 ./kafka-server-start.sh ../config/server-1.properties
@@ -179,7 +179,7 @@ auto.create.topics.enable=false
 ## List the topics in a cluster
 
 ```
-./kafka-topics.sh --zookeeper localhost:2181 --list
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
 ```
 
 ## Describe topic

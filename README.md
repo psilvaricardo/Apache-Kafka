@@ -38,11 +38,13 @@ By the time of writing this project was set up using the following environment:
 - **Partitioner:** When the producer is invoked for sending a message, it goes through a lot of layers behind the scenes before the message is sent to Kafka, one of the layers is the **Partitioner.** The partitioner first checks, whether a key is present as part of the message or not. 
   - When you are not sending any Key, the partitioner will use the Round-Robin approach to send a message across all the existing partitions, meaning all your messages could end up distributed across all the partitions. In this approach, there is no guarantee the consumer will be able to read all the messages in the same order because consumer pulls the messages from all the partitions at the same time.
   - When you are using a Key, (the Key can be of any type, the most common example is a String Key), the Producer is going to apply some hashing technique to determine the partition value. When the same key is sent for two or multiple messages, it's going to resolve the messages to the same partition. And the same will be applied fot all other messages with different keys. Keep in mind, **same key always results to the same partition**.
-- **Consumer Offsets:** Any message that's produced into the topic will have a unique ID call offset. Consumers have three options when it comes to reading the messages from the topic.
+- **Consumer Offsets:** Any message that's produced into the topic will have a unique ID called offset. Consumers have three options when it comes to reading the messages from the topic.
   - They can read the messages from the beginning using **--from-beginning**
   - They can read the messages from the **latest**. Meaning read only the messages that's going to come after the consumers spun up.
   - They can read the messages from **specific offset**. Meaning, read the messages and the topic by passing a specific offset value from the consumer. This option can only be done programmatically.
+  - If for some reason the consumer crashed and while it is down, the producer of the topic produced some more messages. Now the consumer is brought up after some time, how does it know that it needs to read from offset for the consumer? The consumer offset in general are stored in an internal topic called **__consumer_offsets**. In a nutshell, the consumer offsets behave like a bookmark for the consumers to go on check from which point in the topic it needs to read the messages from.
 
+- There is a handy command that you can run, which is going to list all the topics that you have in your broker: 
 
 ## Information references
 - https://www.conduktor.io/kafka/kafka-topics-cli-tutorial
