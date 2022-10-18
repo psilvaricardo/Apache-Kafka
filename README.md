@@ -66,8 +66,13 @@ By the time of writing this project was set up using the following environment:
   - **Easy Scalable**.
   - **Handling Concurrency is fairly easy**.
   - There are a lot more... for now let's focus on Kafka. 
-- Kafka Cluster: 
-- 
+- **Kafka Cluster:** 
+  - Normally you may want to have more than one broker as part of the kafka Cluster, they will be managed by zookeeper.
+  - All the kafka brokers send a heartbeat to the zookeeper at regular intervals to ensure that the state of the broker is healthy and active to serve client requests.
+  - If one of the kafka brokers goes down, then the cluster manager, which is the zookeeper here, gets notified, then all the client requests will be routed to the other available brokers. By this way, their clients won't have any clue that an issue is going on.
+  - It is easy to scale the number of brokers in the cluster without affecting the clients.
+  - Kafka retains a record and a file system and each broker will have its own file system in the event of failure.
+  - In the event of failure, Kafka handles it using replication.
 
 
 ## Information references
