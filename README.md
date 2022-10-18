@@ -73,6 +73,13 @@ By the time of writing this project was set up using the following environment:
   - It is easy to scale the number of brokers in the cluster without affecting the clients.
   - Kafka retains a record and a file system and each broker will have its own file system in the event of failure.
   - In the event of failure, Kafka handles it using replication.
+- **How Topics are distributed?**
+  - At first, we have a zookeeper and a Kafka cluster. If we have an example with a Kafka Cluster with 3 kafka brokers, one of the available broker will behave as a controller. Normally, this is the first broker to join the cluster. Think of this as one additional role for the broker. At this point, we have the environment completely set.
+  - When the create command issued to the zookeeper, the zookeeper takes care of redirecting this request to the controller. The role of this controller is to distribute the ownership of the partitions to the next available broker.
+  - In distributed systems, this concept of distributing partitions to the brokers is called a leader assignment.
+  - The Partitioner takes care of determining which partition the message is going to go.
+  - The client requests from the producer are distributed between the brokers based on the partition, which indirectly means that the load is evenly distributed between the brokers.
+  - Clients will only invoke the leader of the partition to produce and consume data
 
 
 ## Information references
