@@ -46,13 +46,29 @@ By the time of writing this project was set up using the following environment:
   - There is a handy command that you can run, which is going to list all the topics that you have in your broker: [List the topics in a cluster](./SetUpKafka.md#list-the-topics-in-a-cluster)
 - **Group Id:** It plays a major role when it comes to scalable message consumption.
   - Each different application will have a unique consumer group.
+  - The consumer groups are fundamentally the basis for a scalable message consumption.
   - The Kafka Broker manages the consumer-groups, it also acts as a group coordinator.
-- Apache Kafka as a **distributed system:** A distributed system, in general, are a collection of systems work and interact together in order to deliver some functionality or value. Some characteristic of distributed system are:
+- **Consumer Groups:**
+  - Consumer groups are used for scalable message consumption.
+  - Different applications will need to have a unique group id.
+  - It is the Kafka broker which manages the consumer group.
+- **Commit Log:**
+  - When the producer sends a message, it first reaches the topic and then the very next thing that happens is that the record gets returned to a file system in the machine. So the file system is where the Kafka Broker is installed, for this example, it is our local machine: /tmp/kafka-logs
+  - The log record is always written into the file system as bytes.
+  - So when the consumer who is continuously pulling for new records, can only see the records that are committed to the file system, as new records are produced for the topic, then the records get appended to the log file and the process continues.
+- **Retention Policy:**
+  - Retention policy is one of the key properties that's going to determine how long the log message is going to be retained.
+  - Retention policy is configured using the **log.retention.hours** property in the **server.properties** file
+  - The default kafka retention policy period is 168 hours (seven days).
+- **Apache Kafka as a distributed system:** A distributed system, in general, are a collection of systems work and interact together in order to deliver some functionality or value. Some characteristic of distributed system are:
   - **Availability and Fault Tolerance**.
   - **Reliable Work Distribution**.
   - **Easy Scalable**.
   - **Handling Concurrency is fairly easy**.
   - There are a lot more... for now let's focus on Kafka. 
+- Kafka Cluster: 
+- 
+
 
 ## Information references
 - https://www.conduktor.io/kafka/kafka-topics-cli-tutorial
