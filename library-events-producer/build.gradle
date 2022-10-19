@@ -21,6 +21,10 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+
+	testImplementation 'org.projectlombok:lombok:1.18.22'
+	testImplementation 'org.jetbrains:annotations:20.1.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
