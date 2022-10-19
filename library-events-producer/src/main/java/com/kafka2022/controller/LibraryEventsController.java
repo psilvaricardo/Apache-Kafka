@@ -1,4 +1,4 @@
-package com.kafka2022.domain.controller;
+package com.kafka2022.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kafka2022.domain.LibraryEvent;
@@ -27,7 +27,7 @@ public class LibraryEventsController {
     // POST
     @PostMapping("/v1/libraryevent")
     public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException {
-        log.info("com.kafka2022.domain.controller.LibraryEventsController POST /v1/libraryevent event : {}", libraryEvent);
+        log.info("com.kafka2022.controller.LibraryEventsController POST /v1/libraryevent event : {}", libraryEvent);
 
         //invoke kafka producer
         //libraryEvent.setLibraryEventType(LibraryEventType.NEW);
@@ -39,7 +39,7 @@ public class LibraryEventsController {
     //PUT
     @PutMapping("/v1/libraryevent")
     public ResponseEntity<?> putLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException {
-        log.info("com.kafka2022.domain.controller.LibraryEventsController PUT /v1/libraryevent event : {}", libraryEvent);
+        log.info("com.kafka2022.controller.LibraryEventsController PUT /v1/libraryevent event : {}", libraryEvent);
 
         log.info("LibraryEvent : {} ",libraryEvent );
         if(libraryEvent.getLibraryEventId()==null){
