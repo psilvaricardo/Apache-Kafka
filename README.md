@@ -80,7 +80,18 @@ By the time of writing this project was set up using the following environment:
   - The Partitioner takes care of determining which partition the message is going to go.
   - The client requests from the producer are distributed between the brokers based on the partition, which indirectly means that the load is evenly distributed between the brokers.
   - Clients will only invoke the leader of the partition to produce and consume data
-
+- **How Kafka handles data loss?**
+  - Kafka handles this issue using replication.
+  - Previously when we created a topic, we were using **--replication-factor 3** as part of the parameters.
+  - For example, if we have a Kafka producer which produces the message to Partition Zero, it goes to the leader, which is the broker one. And after the messages received with the broker one, the message is persisted into the file system. Now the broker one is the leader replica, please keep in mind the replication factor is three, now we have one copy of the actual message since the replication factor is three, Kafka is going to create two more copies of the same message, **so replication factors equal to number of copies of the same message.** So the next step is the same message is copied to broker two, and it gets written into the file system. So Broker two is the follower of Partition Zero, which is also known as the follower replica, and the same step is repeated for Broker three. Now we have three copies of the same data available in all the brokers, in Kafka terminology this is called replication.
+  - When one of the partition goes down, the Zookeeper gets notified about the failure, and it assigns the new leader to the controller.
+- **What is In-Sync Replica (ISR)?**
+  - This represents the number of replica in sync with each other and the Kafka cluster. This includes both the **leader** and **follower** replica.
+  - The in-sync replica is always recommended to be greater than one.
+  - The ideal value is **ISR ==* Replication Factor*
+  - This can be controlled by **min.insync.replicas** property
+  - This configuration can be set at the **broker** or **topic** level
+  - There is a command in order to check who is the leader, who is the replicas of the partition and our user value, we can check here: **./kafka-topics.sh --bootstrap-server localhost:9092 --list --topic <topic-name>**  this is going to describe all the topics that you have in your local machine.
 
 ## Information references
 - https://www.conduktor.io/kafka/kafka-topics-cli-tutorial
