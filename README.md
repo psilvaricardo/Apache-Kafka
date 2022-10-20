@@ -96,3 +96,4 @@ By the time of writing this project was set up using the following environment:
 ## Information references
 - https://www.conduktor.io/kafka/kafka-topics-cli-tutorial
 - https://docs.spring.io/spring-kafka/reference/html/#sending-messages
+- https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot
