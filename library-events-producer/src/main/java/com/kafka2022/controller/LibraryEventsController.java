@@ -42,10 +42,11 @@ public class LibraryEventsController {
         log.info("com.kafka2022.controller.LibraryEventsController PUT /v1/libraryevent event : {}", libraryEvent);
 
         log.info("LibraryEvent : {} ",libraryEvent );
-        if(libraryEvent.getLibraryEventId()==null){
+        if( libraryEvent.getLibraryEventId() == null ) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the LibraryEventId");
         }
 
+        //invoke kafka producer
         //libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
         //libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
         return ResponseEntity.status(HttpStatus.OK).body(libraryEvent);
