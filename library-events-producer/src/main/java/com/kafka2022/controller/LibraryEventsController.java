@@ -2,7 +2,9 @@ package com.kafka2022.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kafka2022.domain.LibraryEvent;
+import com.kafka2022.producer.LibraryEventProducer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +19,8 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class LibraryEventsController {
 
-    //@Autowired
-    //LibraryEventProducer libraryEventProducer;
+    @Autowired
+    LibraryEventProducer libraryEventProducer; // inject the event producer
 
     // POST
     @PostMapping("/v1/libraryevent")
@@ -26,8 +28,9 @@ public class LibraryEventsController {
         log.info("com.kafka2022.controller.LibraryEventsController POST /v1/libraryevent event : {}", libraryEvent);
 
         //invoke kafka producer
-        //libraryEvent.setLibraryEventType(LibraryEventType.NEW);
-        //libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
+        //invoke kafka producer
+        // libraryEvent.setLibraryEventType(LibraryEventType.NEW);
+        libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
         //libraryEventProducer.sendLibraryEvent(libraryEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }

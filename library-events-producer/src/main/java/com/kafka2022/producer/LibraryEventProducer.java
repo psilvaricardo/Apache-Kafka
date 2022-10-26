@@ -35,11 +35,12 @@ public class LibraryEventProducer {
      * That's the reason why we have <Integer, String>
      * */
     @Autowired
-    KafkaTemplate<Integer, String> kafkaTemplate;
+    private KafkaTemplate<Integer, String> kafkaTemplate;
 
-    String topic = "library-events";
+    private String topic = "library-events";
+
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     /**
      *
@@ -78,6 +79,8 @@ public class LibraryEventProducer {
         Integer key = libraryEvent.getLibraryEventId();
         String value = objectMapper.writeValueAsString(libraryEvent);
 
+        // with sendDefault, you depend on whatever you have on the config yml file
+        // but when you use send, you have the freedom to pass the topic Id as parameter,
         ProducerRecord<Integer,String> producerRecord = buildProducerRecord(key, value, topic);
         ListenableFuture<SendResult<Integer,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
 
