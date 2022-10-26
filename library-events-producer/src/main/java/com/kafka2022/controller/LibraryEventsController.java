@@ -2,13 +2,9 @@ package com.kafka2022.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kafka2022.domain.LibraryEvent;
-//import com.kafka2022.domain.LibraryEventType;
-//import com.kafka2022.producer.LibraryEventProducer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
