@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // to avoid conflicts
 @EmbeddedKafka(topics = {"library-events"}, partitions = 3)
 @TestPropertySource(properties = {"spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}",
         "spring.kafka.admin.properties.bootstrap.servers=${spring.embedded.kafka.brokers}"})
@@ -60,7 +60,7 @@ public class LibraryEventsControllerTest {
         //given
         Book book = Book.builder()
                 .bookId(123)
-                .bookAuthor("Dilip")
+                .bookAuthor("Richard")
                 .bookName("Kafka using Spring Boot")
                 .build();
 
@@ -68,6 +68,7 @@ public class LibraryEventsControllerTest {
                 .libraryEventId(null)
                 .book(book)
                 .build();
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("content-type", MediaType.APPLICATION_JSON.toString());
         HttpEntity<LibraryEvent> request = new HttpEntity<>(libraryEvent, headers);
@@ -78,13 +79,11 @@ public class LibraryEventsControllerTest {
         //then
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
-
-
         ConsumerRecords<Integer, String> consumerRecords = KafkaTestUtils.getRecords(consumer);
         //Thread.sleep(3000);
         assert consumerRecords.count() == 1;
         consumerRecords.forEach(record-> {
-            String expectedRecord = "{\"libraryEventId\":null,\"libraryEventType\":\"NEW\",\"book\":{\"bookId\":123,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Dilip\"}}";
+            String expectedRecord = "{\"libraryEventId\":null,\"libraryEventType\":\"NEW\",\"book\":{\"bookId\":123,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Richard\"}}";
             String value = record.value();
             assertEquals(expectedRecord, value);
         });
