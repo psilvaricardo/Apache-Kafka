@@ -28,7 +28,6 @@ public class LibraryEventsController {
         log.info("com.kafka2022.controller.LibraryEventsController POST /v1/libraryevent event : {}", libraryEvent);
 
         //invoke kafka producer
-        //invoke kafka producer
         // libraryEvent.setLibraryEventType(LibraryEventType.NEW);
         libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
         //libraryEventProducer.sendLibraryEvent(libraryEvent);

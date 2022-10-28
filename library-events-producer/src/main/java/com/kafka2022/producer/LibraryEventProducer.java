@@ -100,6 +100,7 @@ public class LibraryEventProducer {
     }
 
     private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {
+        // the headers are additional information, metadata about the message
         List<Header> recordHeaders = List.of(new RecordHeader("event-source", "scanner".getBytes()));
         return new ProducerRecord<>(topic, null, key, value, recordHeaders);
     }
