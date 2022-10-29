@@ -1,0 +1,42 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.4'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+}
+
+group = 'com.kafka2022'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+
+	testImplementation 'org.projectlombok:lombok:1.18.22'
+	testImplementation 'org.jetbrains:annotations:20.1.0'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+sourceSets {
+	test {
+		java.srcDirs = ['src/test/java/unit','src/test/java/intg']
+	}
+}
