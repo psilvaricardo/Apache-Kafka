@@ -17,7 +17,7 @@ public class LibraryEvent {
     private Integer libraryEventId;
     private LibraryEventType libraryEventType;
     @NotNull
-    @Valid
+    @Valid // it will be mandatory to pass valid values as part of the unit tests, field-level validations
     private Book book;
 
 }
