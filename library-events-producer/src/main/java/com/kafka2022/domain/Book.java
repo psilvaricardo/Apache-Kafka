@@ -14,9 +14,14 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class Book {
     @NotNull
+    // this will enforce to have valid values as part of the Unit Test
     private Integer bookId;
+
     @NotBlank
+    // this will enforce to have valid values as part of the Unit Test
     private String bookName;
+
     @NotBlank
+    // this will enforce to have valid values as part of the Unit Test
     private String bookAuthor;
 }

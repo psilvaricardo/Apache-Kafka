@@ -20,6 +20,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// https://stackoverflow.com/questions/8756768/annotations-from-javax-validation-constraints-not-working
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 
