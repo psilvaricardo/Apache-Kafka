@@ -13,10 +13,15 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class Book {
-    @NotNull // this will enforce to have valid values as part of the Unit Test
+    @NotNull
+    // this will enforce to have valid values as part of the Unit Test
     private Integer bookId;
-    @NotBlank // this will enforce to have valid values as part of the Unit Test
+
+    @NotBlank
+    // this will enforce to have valid values as part of the Unit Test
     private String bookName;
-    @NotBlank // this will enforce to have valid values as part of the Unit Test
+
+    @NotBlank
+    // this will enforce to have valid values as part of the Unit Test
     private String bookAuthor;
 }
