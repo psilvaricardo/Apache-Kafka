@@ -99,6 +99,19 @@ public class LibraryEventProducer {
         return listenableFuture;
     }
 
+    private void handleFailure(Integer key, String value, Throwable ex) {
+        log.error("Error Sending the Message and the exception is {}", ex.getMessage());
+        try {
+            throw ex;
+        } catch (Throwable throwable) {
+            log.error("Error in OnFailure: {}", throwable.getMessage());
+        }
+    }
+
+    private void handleSuccess(Integer key, String value, SendResult<Integer, String> result) {
+        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
+    }
+
     private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {
         // the headers are additional information, metadata about the message
         List<Header> recordHeaders = List.of(new RecordHeader("event-source", "scanner".getBytes()));
@@ -124,17 +137,5 @@ public class LibraryEventProducer {
         return sendResult;
     }
 
-    private void handleFailure(Integer key, String value, Throwable ex) {
-        log.error("Error Sending the Message and the exception is {}", ex.getMessage());
-        try {
-            throw ex;
-        } catch (Throwable throwable) {
-            log.error("Error in OnFailure: {}", throwable.getMessage());
-        }
-    }
-
-    private void handleSuccess(Integer key, String value, SendResult<Integer, String> result) {
-        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
-    }
 
 }

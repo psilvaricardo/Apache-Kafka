@@ -73,6 +73,7 @@ public class LibraryEventControllerUnitTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(libraryEvent);
+        // for this testing the controller is not returning anything, so let's return null for now
         when(libraryEventProducer.sendLibraryEvent_Approach2(isA(LibraryEvent.class))).thenReturn(null);
         //expect
         String expectedErrorMessage = "book.bookAuthor - must not be blank, book.bookId - must not be null";
@@ -99,6 +100,7 @@ public class LibraryEventControllerUnitTest {
                 .book(book)
                 .build();
         String json = objectMapper.writeValueAsString(libraryEvent);
+        // for this testing the controller is not returning anything, so let's return null for now
         when(libraryEventProducer.sendLibraryEvent_Approach2(isA(LibraryEvent.class))).thenReturn(null);
 
         //expect
@@ -125,6 +127,7 @@ public class LibraryEventControllerUnitTest {
                 .book(book)
                 .build();
         String json = objectMapper.writeValueAsString(libraryEvent);
+        // for this testing the controller is not returning anything, so let's return null for now
         when(libraryEventProducer.sendLibraryEvent_Approach2(isA(LibraryEvent.class))).thenReturn(null);
 
         //expect
@@ -136,5 +139,6 @@ public class LibraryEventControllerUnitTest {
                 .andExpect(content().string("Please pass the LibraryEventId"));
 
     }
+
 }
 
