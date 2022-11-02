@@ -42,6 +42,7 @@ public class LibraryEventsController {
 
         log.info("LibraryEvent : {} ",libraryEvent );
         if( libraryEvent.getLibraryEventId() == null ) {
+            // we must do this validation as the ID is mandatory for making updates
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the LibraryEventId");
         }
 
