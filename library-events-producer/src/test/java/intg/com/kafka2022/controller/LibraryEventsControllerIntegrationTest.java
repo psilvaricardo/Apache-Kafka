@@ -125,7 +125,7 @@ public class LibraryEventsControllerIntegrationTest {
 
     @Test
     @Timeout(5)
-    void updateLibraryEvent() throws Exception {
+    void updateLibraryEvent_withLibraryEventId() throws Exception {
         //given
         Book book = Book.builder()
                 .bookId(123)
