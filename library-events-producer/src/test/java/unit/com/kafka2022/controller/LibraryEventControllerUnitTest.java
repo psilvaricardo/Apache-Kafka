@@ -53,7 +53,7 @@ public class LibraryEventControllerUnitTest {
         mockMvc.perform(post("/v1/libraryevent")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                        .andExpect(status().isCreated());
 
     }
 

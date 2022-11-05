@@ -18,7 +18,6 @@ spring:
       properties:
         acks: all
         retries: 10
-        # retry.backoff.ms: 1000
     admin:
       properties:
         # same number of replicas given to the NewTopic created programmatically

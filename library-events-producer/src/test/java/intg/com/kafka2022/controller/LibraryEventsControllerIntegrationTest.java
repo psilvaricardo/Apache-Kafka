@@ -1,7 +1,10 @@
 package com.kafka2022.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kafka2022.domain.Book;
 import com.kafka2022.domain.LibraryEvent;
+import com.kafka2022.domain.LibraryEventType;
+import com.kafka2022.producer.LibraryEventProducer;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -12,7 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -20,12 +25,18 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // to avoid conflicts
 @EmbeddedKafka(topics = {"library-events"}, partitions = 3) // this will run kafka embedded for test-scope only
 // Override some properties to use the Embedded kafka servers
@@ -43,6 +54,14 @@ public class LibraryEventsControllerIntegrationTest {
 
     // This consumer will help us to validate if the messages got posted or not.
     private Consumer<Integer, String> consumer;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    LibraryEventProducer libraryEventProducer; // this is a dependency from the LibraryEventsController
 
     // We are creating and initializing the consumer as part of the setUp method.
     @BeforeEach
@@ -89,7 +108,7 @@ public class LibraryEventsControllerIntegrationTest {
 
         // this will retrieve any records from the embedded kafka topic
         ConsumerRecords<Integer, String> consumerRecords = KafkaTestUtils.getRecords(consumer);
-        //Thread.sleep(3000);
+
         assert consumerRecords.count() == 1;
         consumerRecords.forEach(record-> {
             String expectedRecord = "{\"libraryEventId\":null,\"libraryEventType\":\"NEW\",\"book\":{\"bookId\":123,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Richard\"}}";
@@ -102,8 +121,62 @@ public class LibraryEventsControllerIntegrationTest {
             assertEquals(expectedRecord, value);
         });
 
+    }
+
+    @Test
+    @Timeout(5)
+    void updateLibraryEvent_withLibraryEventId() throws Exception {
+        //given
+        Book book = Book.builder()
+                .bookId(123)
+                .bookAuthor("Richard")
+                .bookName("Kafka using Spring Boot")
+                .build();
+
+        LibraryEvent libraryEvent = LibraryEvent.builder()
+                .libraryEventId(456)
+                .book(book)
+                .libraryEventType(LibraryEventType.UPDATE)
+                .build();
+
+        String json = objectMapper.writeValueAsString(libraryEvent);
+        // mock the behavior of the libraryEventProducer
+        when(libraryEventProducer.sendLibraryEvent_Approach2(isA(LibraryEvent.class))).thenReturn(null);
+
+        //expect
+        mockMvc.perform(put("/v1/libraryevent")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
     }
 
+    @Test
+    @Timeout(5)
+    void updateLibraryEvent_withNullLibraryEventId() throws Exception {
+        //given
+        Book book = Book.builder()
+                .bookId(123)
+                .bookAuthor("Richard")
+                .bookName("Kafka using Spring Boot")
+                .build();
+
+        LibraryEvent libraryEvent = LibraryEvent.builder()
+                .libraryEventId(null)
+                .book(book)
+                .libraryEventType(LibraryEventType.UPDATE)
+                .build();
+
+        String json = objectMapper.writeValueAsString(libraryEvent);
+        // mock the behavior of the libraryEventProducer
+        when(libraryEventProducer.sendLibraryEvent_Approach2(isA(LibraryEvent.class))).thenReturn(null);
+
+        //expect
+        mockMvc.perform(put("/v1/libraryevent")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+    }
 
 }
