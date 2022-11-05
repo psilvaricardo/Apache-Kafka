@@ -29,6 +29,8 @@ dependencies {
 
 	// https://stackoverflow.com/questions/8756768/annotations-from-javax-validation-constraints-not-working
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// Intellij IDEA complains cannot resolve spring boot properties but they work fine
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 tasks.named('test') {
