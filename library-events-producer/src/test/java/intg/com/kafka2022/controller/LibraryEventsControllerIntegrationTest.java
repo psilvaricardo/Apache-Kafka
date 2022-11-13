@@ -1,10 +1,7 @@
 package com.kafka2022.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kafka2022.domain.Book;
 import com.kafka2022.domain.LibraryEvent;
-import com.kafka2022.domain.LibraryEventType;
-import com.kafka2022.producer.LibraryEventProducer;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -16,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -24,16 +20,12 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(topics = {"library-events"}, partitions = 3)
@@ -68,7 +60,7 @@ public class LibraryEventsControllerIntegrationTest {
         //given
         Book book = Book.builder()
                 .bookId(123)
-                .bookAuthor("Dilip")
+                .bookAuthor("Richard")
                 .bookName("Kafka using Spring Boot")
                 .build();
 
@@ -92,7 +84,7 @@ public class LibraryEventsControllerIntegrationTest {
         //Thread.sleep(3000);
         assert consumerRecords.count() == 1;
         consumerRecords.forEach(record-> {
-            String expectedRecord = "{\"libraryEventId\":null,\"libraryEventType\":\"NEW\",\"book\":{\"bookId\":123,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Dilip\"}}";
+            String expectedRecord = "{\"libraryEventId\":null,\"libraryEventType\":\"NEW\",\"book\":{\"bookId\":123,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Richard\"}}";
             String value = record.value();
             assertEquals(expectedRecord, value);
         });
@@ -106,7 +98,7 @@ public class LibraryEventsControllerIntegrationTest {
         //given
         Book book = Book.builder()
                 .bookId(456)
-                .bookAuthor("Dilip")
+                .bookAuthor("Richard")
                 .bookName("Kafka using Spring Boot")
                 .build();
 
@@ -131,7 +123,7 @@ public class LibraryEventsControllerIntegrationTest {
         assert consumerRecords.count() == 1;
         consumerRecords.forEach(record-> {
             if(record.key()!=null){
-                String expectedRecord = "{\"libraryEventId\":123,\"libraryEventType\":\"UPDATE\",\"book\":{\"bookId\":456,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Dilip\"}}";
+                String expectedRecord = "{\"libraryEventId\":123,\"libraryEventType\":\"UPDATE\",\"book\":{\"bookId\":456,\"bookName\":\"Kafka using Spring Boot\",\"bookAuthor\":\"Richard\"}}";
                 String value = record.value();
                 assertEquals(expectedRecord, value);
             }
