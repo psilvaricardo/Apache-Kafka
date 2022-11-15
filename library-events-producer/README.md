@@ -28,7 +28,9 @@ By the time of writing this project was set up using the following environment:
 ## Setting Up Kafka
 - https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot/blob/master/SetUpKafka.md
 
-## Key Concepts, Useful Resources & Links
+# Key Concepts, Useful Resources & Links
+
+## KafKa Producer related terminology
 
 - **Kafka Topic:** A Topic is an **Entity** in Kafka, and it has a name. (A quick analogy is to think of Topic as a Table in a Data Base). Topics in general live inside the Kafka Broker. Kafka client uses the topic name to produce and consume messages. The Producer will use the topic name to produce a message.
 - **Partitions:** Partitions is where actually the message is located inside the topic. Each topic in general can have one or more partitions. Each partition is an ordered, immutable sequence of records. That means once a record is produced, it cannot be changed at all. Each record as a number associated with a number called Offset. An offset is generated when a record is published to the topic. Offsets play an important role when it comes to consumers. Each partition is independent of each other and that's why you will see the offset in both of those partitions. Ordering is guaranteed only at the partition level.
@@ -110,6 +112,31 @@ By the time of writing this project was set up using the following environment:
   - https://kafka.apache.org/documentation/#producerconfigs
 
 
+## KafKa Consumer related terminology
+
+- This is the flow of how Kafka Consumer works, in general:
+- Usually, we already have one or many **KafKa topics** (for the example we have been using on this training, it is library-events).
+- As part of the KafKa Consumer, when the **POLL Operation** is executed, it is going to poll for new records from the KafKa topic and then, is going to retrieve these records. Next, the KafKa consumer is going to process these records. And then, is going to continue the same process.
+- On a side-note, the Kafka Consumer has the option to consume from multiple topics, but this is not part of this training.
+
+- **What are the options to Configure a Spring KafKa Consumer:**
+  - 1. MessageListenerContainer: This is an interface, and it has two implementations
+    - **KafkaMessageListenerContainer:** This is the class which is the implementation of the MessageListenerContainer. This is the class in charge of **polling the records** from the kafka topic and **commits the Offsets** after the records are processed. This class is **Single Threaded**, meaning, the pulling call is handled by a single thread.
+    - **ConcurrentMessageListenerContainer:** This represents **multiple instances** of the kafka KafkaMessageListenerContainer, the implementation is going to work in a similar approach, but the advantage is that you can have multiple instances so you can pull from the kafka topic simultaneously using multiple threads.
+  - 2. **@KafkaListener** Annotation
+    - Uses the ConcurrentMessageListenerContainer behind the scenes.
+    - This is the easiest way to build a KafKa Consumer with spring.
+    - We will be using this option to build the KafKa Consumer in this training.
+    - Everything you have to do is to add the **@kafkalistener** annotation to a method in a class which is a bean and add the @EnableKafka to a configuration class which will set up the KafKa consumer for you.
+    - To configure a simple KafKa consumer, you need to provide the next properties:
+      - bootstrap.servers
+      - key-deserializer
+      - value-deserializer
+      - group-id
+
+  
+
+
 ## Information references
 - https://kafka.apache.org/documentation/
 - https://kafka.apache.org/documentation/#producerconfigs
@@ -118,4 +145,4 @@ By the time of writing this project was set up using the following environment:
 - https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot
 - https://gitter.im/spring-projects/spring-kafka?at=5b749489196bc60b6bd4c455
 - https://github.com/4neesh/YouTube-Channel
-
+- https://docs.spring.io/spring-kafka/reference/html/#receiving-messages
