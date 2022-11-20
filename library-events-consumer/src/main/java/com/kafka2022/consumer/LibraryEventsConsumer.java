@@ -5,7 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-// @Component let's disable this bean temporally
+@Component
 @Slf4j
 public class LibraryEventsConsumer {
 

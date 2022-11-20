@@ -7,7 +7,7 @@ import org.springframework.kafka.listener.AcknowledgingMessageListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component let's disable this bean
 @Slf4j
 public class LibraryEventsConsumerManualOffset implements AcknowledgingMessageListener<Integer,String> {
 

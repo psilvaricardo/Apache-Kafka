@@ -36,7 +36,8 @@ public class LibraryEventConsumerConfig {
 
         // let's override the Acknowledged mode
         // we are manually manage the offset, for this to work, we need a new listener
-        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        // factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+
         return factory;
     }
 }
