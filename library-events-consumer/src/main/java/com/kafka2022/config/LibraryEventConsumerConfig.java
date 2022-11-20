@@ -38,6 +38,15 @@ public class LibraryEventConsumerConfig {
         // we are manually manage the offset, for this to work, we need a new listener
         // factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
 
+        // we can leverage this to configure multiple KafKa listeners from the same applications itself
+        // if we have our application running in kubernetes/cloud this is not necessary
+
+        // we are going to span 3 threads with the same instance of the Kafka listeners.
+        // when the application is up and running we can check that the container is running on a different thread
+        // for this example, 3 container threads will be listening to the same partition, in parallel.
+        // this option is recommended if you are not running your application in a cloud-like environment
+        factory.setConcurrency(3); // because we have 3 partitions
+
         return factory;
     }
 }
