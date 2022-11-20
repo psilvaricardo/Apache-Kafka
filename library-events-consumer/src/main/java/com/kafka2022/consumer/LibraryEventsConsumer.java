@@ -5,7 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component let's disable this bean temporally
 @Slf4j
 public class LibraryEventsConsumer {
 
@@ -13,4 +13,5 @@ public class LibraryEventsConsumer {
     public void onMessage(ConsumerRecord<Integer,String> consumerRecord) {
         log.info("com.kafka2022.consumer.LibraryEventsConsumer.ConsumerRecord : {}", consumerRecord);
     }
+
 }
