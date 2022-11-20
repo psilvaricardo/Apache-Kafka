@@ -14,6 +14,20 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-events-listener-group
+  # this setup is for the DB connection
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+  # this is the JPA where we configure which DB we are going to talk to
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    # this is going to generate the tables for you
+    generate-ddl: true
+  # in-memory DB view, so we can see the DB in browser
+  h2:
+    console:
+      enabled: true
 
 ---
 
