@@ -134,7 +134,7 @@ By the time of writing this project was set up using the following environment:
       - value-deserializer
       - group-id
 
-  
+
 
 
 ## Information references
