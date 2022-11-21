@@ -3,37 +3,94 @@ spring:
     active: local
 server:
   port: 8081
+topics:
+  retry: 'library-events.RETRY'
+  dlt: 'library-events.DLT'
 
 ---
 
 spring:
   profiles: local
   kafka:
+    template:
+      default-topic: library-events
     consumer:
       bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-events-listener-group
+      auto-offset-reset: latest
+    producer:
+      bootstrap-servers:
+        - localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  # this setup is for the DB connection
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: postgres
+    password: password
+  # this is the JPA where we configure which DB we are going to talk to
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    # this is going to generate the tables for you
+    generate-ddl: true
+  # in-memory DB view, so we can see the DB in browser
+  h2:
+    console:
+      enabled: true
+
+---
+
+
+spring:
+  config:
+    activate:
+      on-profile: nonprod
+  kafka:
+    template:
+      default-topic: library-events
+    consumer:
+      bootstrap-servers: localhost:9095,localhost:9096,localhost:9097
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: library-events-listener-group
+      ssl:
+        trust-store-location: file:/richard/src-code/apache-kafka-2022/docs/ssl/client.truststore.jks
+        trust-store-password: password
+        key-store-location: file:/richard/src-code/apache-kafka-2022/docs/ssl/client.keystore.jks
+        key-store-password: password
+    producer:
+      bootstrap-servers:
+        -   localhost:9095,localhost:9096,localhost:9097
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    properties:
+      security:
+        protocol: SSL
+      ssl.endpoint.identification.algorithm:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
 
 ---
 
 spring:
-  profiles: nonprod
+  config:
+    activate:
+      on-profile: prod
   kafka:
     consumer:
       bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-events-listener-group
-
----
-
-spring:
-  profiles: prod
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
-      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: library-events-listener-group
-
