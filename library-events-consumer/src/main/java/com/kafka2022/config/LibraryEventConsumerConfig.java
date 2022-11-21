@@ -144,14 +144,12 @@ public class LibraryEventConsumerConfig {
 
         var defaultErrorHandler = new DefaultErrorHandler(
                 //consumerRecordRecoverer
-                publishingRecoverer()
-                ,
-                fixedBackOff
-                //expBackOff
+                publishingRecoverer(), fixedBackOff //, expBackOff
         );
 
         exceptiopnToIgnorelist.forEach(defaultErrorHandler::addNotRetryableExceptions);
 
+        // this adds a retry listener logs, so we can have more information
         defaultErrorHandler.setRetryListeners(
                 (record, ex, deliveryAttempt) ->
                         log.info("Failed Record in Retry Listener  exception : {} , deliveryAttempt : {} ", ex.getMessage(), deliveryAttempt)
