@@ -81,6 +81,8 @@ public class LibraryEventConsumerConfig {
         // for this example, 3 container threads will be listening to the same partition, in parallel.
         // this option is recommended if you are not running your application in a cloud-like environment
         factory.setConcurrency(3); // because we have 3 partitions
+
+        // Starting with SpringBoot 2.6.x this is the way to define and handle custom error handler behavior
         factory.setCommonErrorHandler(errorHandler());
 
         return factory;
@@ -123,10 +125,12 @@ public class LibraryEventConsumerConfig {
         );
 
         ExponentialBackOffWithMaxRetries expBackOff = new ExponentialBackOffWithMaxRetries(2);
+
         expBackOff.setInitialInterval(1_000L);
         expBackOff.setMultiplier(2.0);
         expBackOff.setMaxInterval(2_000L);
 
+        // retry with a second in between and retry twice
         var fixedBackOff = new FixedBackOff(1000L, 2L);
 
         /**
