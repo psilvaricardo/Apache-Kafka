@@ -120,7 +120,9 @@ public class LibraryEventConsumerConfig {
 
     public DefaultErrorHandler errorHandler() {
 
+        // this is how you retry specific exceptions
         var exceptiopnToIgnorelist = List.of(
+                // every time this exception happens, there is no way to recover
                 IllegalArgumentException.class
         );
 
