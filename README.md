@@ -1,32 +1,36 @@
-# Apache Kafka 2022
+# Apache Kafka 2025
 
-Apache Kafka for Developers using Spring Boot[Latest Edition]
-
+Apache Kafka for Developers using Spring Boot[Latest Edition]. As of October 2025, the course has been fully upgraded to include the latest Java 21–Java 25 features, giving you hands-on experience with the newest and most powerful additions to the language.
 
 # Apache Kafka for Developers using Spring Boot[LatestEdition]
 
 Learn to build enterprise standard Kafka producers/consumers with Kafka Unit/Integration tests using Spring Boot.
 
 ## Apache Kafka for Developers using Spring Boot
+
 This repository has the complete code related to kafka producers/consumers using spring boot.
 
 ## Environment
 
-By the time of writing this project was set up using the following environment: 
-- Linux arch 5.18.3-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 09 Jun 2022 16:14:10 +0000 x86_64 GNU/Linux
+By the time of writing this project was set up using the following environment:
+
+- Linux archlinux 6.17.3-arch2-1 #1 SMP PREEMPT_DYNAMIC Fri, 17 Oct 2025 13:29:06 +0000 x86_64 GNU/Linux
 
 ## Installation for Arch Linux
+
 - $ sudo pacman -S intellij-idea-community-edition jdk-openjdk jre-openjdk
 - $ paru -S kafka
 - $ sudo systemctl enable kafka.service
 
 ## Installation for Linux
+
 - Go to https://kafka.apache.org/downloads
 - From the latest release version, check the higher Scala version
-- By the time of writing, recommended version 2.13 was downloaded from https://downloads.apache.org/kafka/3.2.1/kafka_2.13-3.2.1.tgz
+- By the time of writing (Sun, 19 Oct 2025), recommended version https://dlcdn.apache.org/kafka/4.1.0/kafka_2.13-4.1.0.tgz
 
 ## Setting Up Kafka
-- https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot/blob/master/SetUpKafka.md
+
+- https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot-v2?tab=readme-ov-file#kafka-setup
 
 # Key Concepts, Useful Resources & Links
 
@@ -37,14 +41,14 @@ By the time of writing this project was set up using the following environment:
 - **Kafka Message:** Every message is sent from the producer and has two values:
   - Key (Optional)
   - Value (Mandatory)
-- **Partitioner:** When the producer is invoked for sending a message, it goes through a lot of layers behind the scenes before the message is sent to Kafka, one of the layers is the **Partitioner.** The partitioner first checks, whether a key is present as part of the message or not. 
+- **Partitioner:** When the producer is invoked for sending a message, it goes through a lot of layers behind the scenes before the message is sent to Kafka, one of the layers is the **Partitioner.** The partitioner first checks, whether a key is present as part of the message or not.
   - When you are not sending any Key, the partitioner will use the Round-Robin approach to send a message across all the existing partitions, meaning all your messages could end up distributed across all the partitions. In this approach, there is no guarantee the consumer will be able to read all the messages in the same order because consumer pulls the messages from all the partitions at the same time.
   - When you are using a Key, (the Key can be of any type, the most common example is a String Key), the Producer is going to apply some hashing technique to determine the partition value. When the same key is sent for two or multiple messages, it's going to resolve the messages to the same partition. And the same will be applied fot all other messages with different keys. Keep in mind, **same key always results to the same partition**.
 - **Consumer Offsets:** Any message that's produced into the topic will have a unique ID called offset. Consumers have three options when it comes to reading the messages from the topic.
   - They can read the messages from the beginning using **--from-beginning**
   - They can read the messages from the **latest**. Meaning read only the messages that's going to come after the consumers spun up.
   - They can read the messages from **specific offset**. Meaning, read the messages and the topic by passing a specific offset value from the consumer. This option can only be done programmatically.
-  - If for some reason the consumer crashed and while it is down, the producer of the topic produced some more messages. Now the consumer is brought up after some time, how does it know that it needs to read from offset for the consumer? The consumer offset in general are stored in an internal topic called **__consumer_offsets**. In a nutshell, the consumer offsets behave like a bookmark for the consumers to go on check from which point in the topic it needs to read the messages from.
+  - If for some reason the consumer crashed and while it is down, the producer of the topic produced some more messages. Now the consumer is brought up after some time, how does it know that it needs to read from offset for the consumer? The consumer offset in general are stored in an internal topic called **\_\_consumer_offsets**. In a nutshell, the consumer offsets behave like a bookmark for the consumers to go on check from which point in the topic it needs to read the messages from.
   - There is a handy command that you can run, which is going to list all the topics that you have in your broker: [List the topics in a cluster](./SetUpKafka.md#list-the-topics-in-a-cluster)
 - **Group Id:** It plays a major role when it comes to scalable message consumption.
   - Each different application will have a unique consumer group.
@@ -67,8 +71,8 @@ By the time of writing this project was set up using the following environment:
   - **Reliable Work Distribution**.
   - **Easy Scalable**.
   - **Handling Concurrency is fairly easy**.
-  - There are a lot more... for now let's focus on Kafka. 
-- **Kafka Cluster:** 
+  - There are a lot more... for now let's focus on Kafka.
+- **Kafka Cluster:**
   - Normally you may want to have more than one broker as part of the kafka Cluster, they will be managed by zookeeper.
   - All the kafka brokers send a heartbeat to the zookeeper at regular intervals to ensure that the state of the broker is healthy and active to serve client requests.
   - If one of the kafka brokers goes down, then the cluster manager, which is the zookeeper here, gets notified, then all the client requests will be routed to the other available brokers. By this way, their clients won't have any clue that an issue is going on.
@@ -90,17 +94,17 @@ By the time of writing this project was set up using the following environment:
 - **What is In-Sync Replica (ISR)?**
   - This represents the number of replica in sync with each other and the Kafka cluster. This includes both the **leader** and **follower** replica.
   - The in-sync replica is always recommended to be greater than one.
-  - The ideal value is **ISR ==* Replication Factor*
+  - The ideal value is \*_ISR ==_ Replication Factor\*
   - This can be controlled by **min.insync.replicas** property
   - This configuration can be set at the **broker** or **topic** level
-  - There is a command in order to check who is the leader, who is the replicas of the partition and our user value, we can check here: **./kafka-topics.sh --bootstrap-server localhost:9092 --list --topic <topic-name>**  this is going to describe all the topics that you have in your local machine.
+  - There is a command in order to check who is the leader, who is the replicas of the partition and our user value, we can check here: **./kafka-topics.sh --bootstrap-server localhost:9092 --list --topic <topic-name>** this is going to describe all the topics that you have in your local machine.
 - **Important KafKa Producer Configurations**
   - **acks**: This is the key configuration for reliable data delivery. The possible values are 0, 1 or all.
   - **0 (not recommended)**: If the value is zero, then the producer's doesn't care about whether the messages successfully persisted into the replica or follow or pick up.
   - **1 (default)**: If the value is one, then that means the producer's 'send' call is considered to be successful if the data is persistent to the leader replica. Guarantees the message is written to a leader.
-  - **all**: If the value is all, then that means the producer's 'send' call is considered to be successful if one lead and to all the replicas.  Guarantees the message is written to a leader and to all replicas. This options is recommended if the data generated by your application is very critical.
+  - **all**: If the value is all, then that means the producer's 'send' call is considered to be successful if one lead and to all the replicas. Guarantees the message is written to a leader and to all replicas. This options is recommended if the data generated by your application is very critical.
 - **Important KafKa Producer Configurations (cont)**
-  - **retries**: Retries configuration takes care of retrying the record(s) in case of any failure producing the messages for KafKa. 
+  - **retries**: Retries configuration takes care of retrying the record(s) in case of any failure producing the messages for KafKa.
   - The value of retries is an integer rance that can be between: [0 - 2147483647].
   - In Spring Kafka, the default value is the max value, which is 2147483647.
 - **Important KafKa Producer Configurations (cont)**
@@ -110,7 +114,6 @@ By the time of writing this project was set up using the following environment:
   - There are lots of other configurations that are part of the producer configuration, you can find them here:
   - https://kafka.apache.org/documentation/
   - https://kafka.apache.org/documentation/#producerconfigs
-
 
 ## KafKa Consumer related terminology
 
@@ -134,10 +137,8 @@ By the time of writing this project was set up using the following environment:
       - value-deserializer
       - group-id
 
-
-
-
 ## Information references
+
 - https://kafka.apache.org/documentation/
 - https://kafka.apache.org/documentation/#producerconfigs
 - https://www.conduktor.io/kafka/kafka-topics-cli-tutorial
